@@ -6,6 +6,6 @@ const videoController = require('../../controllers/video.controller');
 
 const router = express.Router();
 
-router.route('/').get(auth(),validate(videoValidation.searchVideoByKeyword), videoController.searchVideoByKeyword);
+router.route('/').get(validate(videoValidation.searchVideoByKeyword), videoController.searchVideoByKeyword);
 
 module.exports = router;

@@ -48,11 +48,13 @@ const updateUser = catchAsync(async (req, res) => {
 });
 
 const addIfNotExists = (array, value) => {
-  let isUpdate = true;
   if (!array.includes(value)) {
-      array.push(value);
+    array.push(value);
   } else {
-      isUpdate = false;
+    const index = array.indexOf(value);
+    if (index !== -1) {
+      array.splice(index, 1);
+    }
   }
   return array;
 };
@@ -65,13 +67,13 @@ const addIfNotExists = (array, value) => {
 
 const updateUserPointWhenDonate = catchAsync(async (req, res) => {
   const giver = await userService.updateUserPoint(req.body.receiveId, req.params.userId, 'donate', req.body.donate);
-  res.send({giver});
+  res.send({ giver });
 });
 
 const updateFollowingUser = catchAsync(async (req, res) => {
   const getCurrentUser = await userService.getUserById(req.params.userId);
   const arr = addIfNotExists(getCurrentUser.followingList, req.body.followingId);
-  const user = await userService.updateUserById(req.params.userId, {followingList: arr});
+  const user = await userService.updateUserById(req.params.userId, { followingList: arr });
   res.send(user);
 });
 
