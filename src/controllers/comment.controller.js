@@ -21,7 +21,7 @@ const getComment = catchAsync(async (req, res) => {
 });
 
 const getComments = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['videoId']);
+  const filter = pick(req.query, ['video']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await commentService.queryComments(filter, options);
   res.send(result);
