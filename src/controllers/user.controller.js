@@ -28,7 +28,6 @@ const getPublicUser = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
   user.followingList = [];
   user.likeList = [];
-  console.log(user);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }

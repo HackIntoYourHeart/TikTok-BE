@@ -10,6 +10,7 @@ router.route('/').post(auth(), validate(commentValidation.createComment), commen
 router
   .route('/:commentId')
   .get(validate(commentValidation.getComment), commentController.getComment)
+  .post(auth(), validate(commentValidation.createComment), commentController.createComment)
   .get(auth(), validate(commentValidation.getComment), commentController.getComment)
   .patch(auth(), validate(commentValidation.updateComment), commentController.updateComment)
   .delete(auth(), validate(commentValidation.deleteComment), commentController.deleteComment);

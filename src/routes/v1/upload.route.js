@@ -35,7 +35,6 @@ router.route('/upload-image').post(auth('uploadImage'), uploadImage.single('imag
 // Route để tải lên video
 router.route('/upload-video').post(auth('uploadVideo'), uploadVideo.single('video'), (req, res) => {
   const videoPath = req.file.path;
-  console.log(req.file)
   const videoKey = `videos/${Date.now()}_${req.file.originalname}`;
 
   const videoStream = fs.createReadStream(videoPath);
@@ -51,7 +50,6 @@ router.route('/upload-video').post(auth('uploadVideo'), uploadVideo.single('vide
       console.error('Error uploading video:', err);
       res.status(500).json({ error: 'Failed to upload video' });
     } else {
-      console.log('Video uploaded successfully');
       res.json({ videoUrl: data.Location });
     }
   });

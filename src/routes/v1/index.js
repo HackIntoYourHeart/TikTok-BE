@@ -5,6 +5,7 @@ const docsRoute = require('./docs.route');
 const uploadRoute = require('./upload.route');
 const videoRoute = require('./video.route');
 const commentRoute = require('./comment.route');
+const getCommentVideo = require('./getCommentVideo.route');
 const searchVideo = require('./video-search.route');
 const rankingRoute = require('./ranking.route');
 const config = require('../../config/config');
@@ -35,6 +36,10 @@ const defaultRoutes = [
   {
     path: '/comments',
     route: commentRoute,
+  },
+  {
+    path: '/get-comments-by-video',
+    route: getCommentVideo,
   },
   {
     path: '/search-videos',

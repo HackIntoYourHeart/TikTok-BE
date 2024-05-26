@@ -5,13 +5,24 @@ const createComment = {
   body: Joi.object().keys({
     video: Joi.string().required().custom(objectId),
     content: Joi.string().required(),
-    user: Joi.string().required().custom(objectId),
   }),
 };
 
 const getComment = {
-  params: Joi.object().keys({
+  query: Joi.object().keys({
     commentId: Joi.string().custom(objectId),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+  }),
+};
+
+const getCommentByVideo = {
+  query: Joi.object().keys({
+    video: Joi.string().custom(objectId),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
   }),
 };
 
@@ -35,4 +46,5 @@ module.exports = {
   getComment,
   updateComment,
   deleteComment,
+  getCommentByVideo,
 };

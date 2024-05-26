@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { toJSON, paginate } = require('./plugins');
 
 const commentSchema = new mongoose.Schema(
   {
@@ -19,7 +20,8 @@ const commentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+commentSchema.plugin(toJSON);
+commentSchema.plugin(paginate);
 const Comment = mongoose.model('Comment', commentSchema);
 
 module.exports = Comment;

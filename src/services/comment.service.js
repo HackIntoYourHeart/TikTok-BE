@@ -6,6 +6,16 @@ const createComment = async (commentBody) => {
   return Comment.create(commentBody);
 };
 
+const queryComments = async (filter, options) => {
+  const modifiedOptions = {
+    ...options,
+    populate: 'user',
+    select: 'id displayName picture',
+  };
+  const comments = await Comment.paginate(filter, modifiedOptions);
+  return comments;
+};
+
 const getCommentById = async (id) => {
   return Comment.findById(id);
 };
@@ -31,6 +41,7 @@ const deleteCommentById = async (commentId) => {
 
 module.exports = {
   createComment,
+  queryComments,
   getCommentById,
   updateCommentById,
   deleteCommentById,

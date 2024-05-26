@@ -5,7 +5,10 @@ const catchAsync = require('../utils/catchAsync');
 const { commentService } = require('../services');
 
 const createComment = catchAsync(async (req, res) => {
-  const comment = await commentService.createComment(req.body);
+  
+  const data = req.body;
+  const comment = await commentService.createComment({ ...data, user: req.user._id });
+
   res.status(httpStatus.CREATED).send(comment);
 });
 
@@ -15,6 +18,13 @@ const getComment = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Comment not found');
   }
   res.send(comment);
+});
+
+const getComments = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['videoId']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const result = await commentService.queryComments(filter, options);
+  res.send(result);
 });
 
 const updateComment = catchAsync(async (req, res) => {
@@ -32,4 +42,5 @@ module.exports = {
   getComment,
   updateComment,
   deleteComment,
+  getComments,
 };

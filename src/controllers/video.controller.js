@@ -44,7 +44,6 @@ const updateLikeListVideo = catchAsync(async (req, res) => {
 });
 
 const searchVideoByKeyword = catchAsync(async (req, res) => {
-  console.log(req.query.keyword)
   const videos = await videoService.searchVideoList(req.query.keyword);
   res.send(videos);
 });
