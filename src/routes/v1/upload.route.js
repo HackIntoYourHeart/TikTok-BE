@@ -40,7 +40,7 @@ router.route('/upload-video').post(auth('uploadVideo'), uploadVideo.single('vide
   const videoStream = fs.createReadStream(videoPath);
 
   const params = {
-    Bucket: process.env.AWS_BUCKET_NAME, 
+    Bucket: process.env.AWS_BUCKET_NAME,
     Key: videoKey,
     Body: videoStream,
   };
@@ -50,7 +50,15 @@ router.route('/upload-video').post(auth('uploadVideo'), uploadVideo.single('vide
       console.error('Error uploading video:', err);
       res.status(500).json({ error: 'Failed to upload video' });
     } else {
-      res.json({ videoUrl: data.Location });
+      // Xóa file cục bộ sau khi tải lên S3 thành công
+      fs.unlink(videoPath, (unlinkErr) => {
+        if (unlinkErr) {
+          console.error('Error deleting local video file:', unlinkErr);
+          res.status(500).json({ error: 'Failed to delete local video file' });
+        } else {
+          res.json({ videoUrl: data.Location });
+        }
+      });
     }
   });
 });
