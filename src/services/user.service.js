@@ -137,7 +137,6 @@ const updateRanking = () => {
         return;
       }
 
-      // Bước 2: Lặp qua danh sách người dùng để cập nhật yesterdayRank
       let rank = 1;
       let previousUserPoint = -1;
 
@@ -160,6 +159,16 @@ const updateRanking = () => {
     });
 };
 
+/**
+ * Search users by displayName
+ * @param {string} displayName
+ * @returns {Promise<Array<User>>}
+ */
+const searchUsersByDisplayName = async (displayName) => {
+  const users = await User.find({ displayName: { $regex: displayName, $options: 'i' } });
+  return users;
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -170,4 +179,5 @@ module.exports = {
   updateUserPoint,
   updateRanking,
   deleteUserById,
+  searchUsersByDisplayName,
 };

@@ -64,6 +64,12 @@ const addIfNotExists = (array, value) => {
 //   res.send({owner, video});
 // });
 
+const searchUsers = catchAsync(async (req, res) => {
+  const { displayName } = req.query;
+  const users = await userService.searchUsersByDisplayName(displayName);
+  res.send(users);
+});
+
 const updateUserPointWhenDonate = catchAsync(async (req, res) => {
   const giver = await userService.updateUserPoint(req.body.receiveId, req.params.userId, 'donate', req.body.donate);
   res.send({ giver });
@@ -91,4 +97,5 @@ module.exports = {
   updateUserPointWhenDonate,
   deleteUser,
   getRanking,
+  searchUsers,
 };

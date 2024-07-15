@@ -23,6 +23,12 @@ const getUsers = {
   }),
 };
 
+const searchUsers = {
+  query: Joi.object().keys({
+    displayName: Joi.string(),
+  }),
+};
+
 const getRanking = {
   query: Joi.object().keys({
     displayName: Joi.string(),
@@ -89,6 +95,7 @@ const deleteUser = {
 module.exports = {
   createUser,
   getUsers,
+  searchUsers,
   getUser,
   getRanking,
   updateUser,
