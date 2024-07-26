@@ -5,6 +5,8 @@ const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
+const WebSocket = require('ws');
+const http = require('http');
 const passport = require('passport');
 const httpStatus = require('http-status');
 const config = require('./config/config');
@@ -15,8 +17,11 @@ const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const { dailyJob } = require('./controllers/task.controller');
+const { handleWebSocketConnection } = require('./controllers/livestream.controller');
+const livestreamRoutes = require('./routes/v1/livestream.router');
 
 const app = express();
+const server = http.createServer(app);
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -66,5 +71,24 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
+
+const wss = new WebSocket.Server({ noServer: true });
+
+app.use('/api/livestream', livestreamRoutes);
+
+server.on('upgrade', (request, socket, head) => {
+  const pathname = request.url;
+  if (pathname === '/stream') {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+});
+
+wss.on('connection', (ws) => {
+  handleWebSocketConnection(ws);
+});
 
 module.exports = app;
