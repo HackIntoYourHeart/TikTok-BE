@@ -6,5 +6,5 @@ const userController = require('../../controllers/user.controller');
 
 const router = express.Router();
 
-router.route('/').get(validate(userValidation.getRanking), userController.getUsers);
+router.route('/').get(validate(userValidation.getRanking), userController.getUsersRanking);
 module.exports = router;

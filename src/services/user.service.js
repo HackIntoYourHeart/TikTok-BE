@@ -29,6 +29,16 @@ const queryUsers = async (filter, options) => {
   return users;
 };
 
+const queryUsersRanking = async (filter, options) => {
+  const sortOptions = {
+    yesterdayRank: { $exists: true } ? 1 : -1,
+    ...options.sortBy && { [options.sortBy.split(':')[0]]: options.sortBy.split(':')[1] === 'asc' ? 1 : -1 }
+  };
+
+  const users = await User.paginate(filter, { sort: sortOptions });
+  return users;
+};
+
 /**
  * Get user by id
  * @param {ObjectId} id
@@ -172,6 +182,7 @@ const searchUsersByDisplayName = async (displayName) => {
 module.exports = {
   createUser,
   queryUsers,
+  queryUsersRanking,
   getUserById,
   getUserByEmail,
   getUserRankings,
