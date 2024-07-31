@@ -1,6 +1,7 @@
 const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
+const noComment = require('./comment-no.route');
 const docsRoute = require('./docs.route');
 const uploadRoute = require('./upload.route');
 const videoRoute = require('./video.route');
@@ -20,6 +21,10 @@ const defaultRoutes = [
   {
     path: '/users',
     route: userRoute,
+  },
+  {
+    path: '/no-comment',
+    route: noComment,
   },
   {
     path: '/upload',
